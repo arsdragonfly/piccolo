@@ -25,8 +25,11 @@ mod collected_print {
     };
     use std::{
         io::{Cursor, Write},
-        pin::Pin,
         sync::mpsc::Sender,
+    };
+
+    use core::{
+        pin::Pin,
     };
 
     pub fn print_callback<'gc>(ctx: piccolo::Context<'gc>, tx: Sender<Vec<u8>>) -> Callback<'gc> {

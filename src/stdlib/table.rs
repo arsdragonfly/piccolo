@@ -1,5 +1,5 @@
 use std::mem;
-use std::pin::Pin;
+use core::pin::Pin;
 
 use anyhow::Context as _;
 use gc_arena::Collect;

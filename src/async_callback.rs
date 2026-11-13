@@ -3,10 +3,13 @@ use std::{
     future::{poll_fn, Future},
     marker::PhantomData,
     mem,
-    pin::Pin,
     ptr,
     rc::Rc,
     task::{self, Poll, RawWaker, RawWakerVTable, Waker},
+};
+
+use core::{
+    pin::Pin,
 };
 
 use gc_arena::{Collect, DynamicRootSet, Mutation};
