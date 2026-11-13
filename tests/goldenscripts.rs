@@ -28,9 +28,7 @@ mod collected_print {
         sync::mpsc::Sender,
     };
 
-    use core::{
-        pin::Pin,
-    };
+    use core::pin::Pin;
 
     pub fn print_callback<'gc>(ctx: piccolo::Context<'gc>, tx: Sender<Vec<u8>>) -> Callback<'gc> {
         Callback::from_fn(

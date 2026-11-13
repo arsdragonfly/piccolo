@@ -1,4 +1,4 @@
-use std::{
+use core::{
     iter,
     ops::{Bound, Index, IndexMut, RangeBounds},
     slice::{self, SliceIndex},

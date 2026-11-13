@@ -1,4 +1,4 @@
-use std::{f64, fmt, i64};
+use core::{f64, fmt, i64};
 
 use gc_arena::{Collect, Gc};
 
@@ -56,7 +56,7 @@ impl<'gc> Value<'gc> {
         struct ValueDisplay<'gc>(Value<'gc>);
 
         impl<'gc> fmt::Display for ValueDisplay<'gc> {
-            fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> std::fmt::Result {
+            fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
                 match self.0 {
                     Value::Nil => write!(fmt, "nil"),
                     Value::Boolean(b) => write!(fmt, "{}", b),
@@ -85,7 +85,7 @@ impl<'gc> Value<'gc> {
         struct ShallowDebug<'gc>(Value<'gc>);
 
         impl<'gc> fmt::Debug for ShallowDebug<'gc> {
-            fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> std::fmt::Result {
+            fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
                 match self.0 {
                     Value::Table(t) => {
                         write!(fmt, "Value::Table({:p})", Gc::as_ptr(t.into_inner()))

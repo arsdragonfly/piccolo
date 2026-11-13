@@ -1,4 +1,4 @@
-use std::{char, fmt};
+use core::{char, fmt};
 
 use gc_arena::Collect;
 use thiserror::Error;

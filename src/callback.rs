@@ -1,9 +1,6 @@
-use std::{
+use core::{
     fmt,
     hash::{Hash, Hasher},
-};
-
-use core::{
     pin::Pin,
 };
 

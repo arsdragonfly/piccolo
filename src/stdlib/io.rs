@@ -1,10 +1,6 @@
-use std::{
-    io::{self, Write},
-};
+use std::io::{self, Write};
 
-use core::{
-    pin::Pin,
-};
+use core::pin::Pin;
 
 use gc_arena::Collect;
 

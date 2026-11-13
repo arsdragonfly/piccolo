@@ -1,4 +1,4 @@
-use std::{
+use core::{
     alloc, fmt,
     hash::{BuildHasherDefault, Hash, Hasher},
     ops, slice,
