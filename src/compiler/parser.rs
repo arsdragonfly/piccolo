@@ -1,4 +1,5 @@
-use std::{fmt, ops, rc::Rc};
+use alloc::rc::Rc;
+use core::{fmt, ops};
 
 use thiserror::Error;
 

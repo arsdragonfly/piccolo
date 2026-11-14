@@ -289,7 +289,8 @@ pub fn load_trig<'gc>(ctx: Context<'gc>, math: Table<'gc>) {
 }
 
 pub fn load_random<'gc>(ctx: Context<'gc>, math: Table<'gc>) {
-    use std::{cell::RefCell, rc::Rc};
+    use alloc::rc::Rc;
+    use core::cell::RefCell;
 
     use rand::{rngs::SmallRng, Rng, SeedableRng};
 

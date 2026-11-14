@@ -1,4 +1,5 @@
-use std::{error::Error as StdError, fmt, string::String as StdString, sync::Arc};
+use alloc::{string::String as AllocString, sync::Arc};
+use core::{error::Error as CoreError, fmt};
 
 use gc_arena::{Collect, Gc, Rootable};
 use thiserror::Error;
@@ -56,7 +57,7 @@ pub enum ExternLuaError {
     #[error("{0}")]
     Number(f64),
     #[error("{0}")]
-    String(StdString),
+    String(AllocString),
     #[error("<table {0:p}>")]
     Table(*const ()),
     #[error("<function {0:p}>")]
@@ -118,7 +119,7 @@ impl RuntimeError {
         Self(Arc::new(err.into()))
     }
 
-    pub fn root_cause(&self) -> &(dyn StdError + 'static) {
+    pub fn root_cause(&self) -> &(dyn CoreError + 'static) {
         self.0.root_cause()
     }
 
@@ -137,8 +138,8 @@ impl RuntimeError {
     }
 }
 
-impl AsRef<dyn StdError + 'static> for RuntimeError {
-    fn as_ref(&self) -> &(dyn StdError + 'static) {
+impl AsRef<dyn CoreError + 'static> for RuntimeError {
+    fn as_ref(&self) -> &(dyn CoreError + 'static) {
         (*self.0).as_ref()
     }
 }
@@ -286,8 +287,8 @@ impl fmt::Display for ExternError {
     }
 }
 
-impl StdError for ExternError {
-    fn source(&self) -> Option<&(dyn StdError + 'static)> {
+impl CoreError for ExternError {
+    fn source(&self) -> Option<&(dyn CoreError + 'static)> {
         match self {
             ExternError::Lua(err) => Some(err),
             ExternError::Runtime(err) => Some(err.as_ref()),
@@ -296,7 +297,7 @@ impl StdError for ExternError {
 }
 
 impl ExternError {
-    pub fn root_cause(&self) -> &(dyn StdError + 'static) {
+    pub fn root_cause(&self) -> &(dyn CoreError + 'static) {
         match self {
             ExternError::Lua(err) => err,
             ExternError::Runtime(err) => err.root_cause(),

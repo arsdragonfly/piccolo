@@ -1,4 +1,5 @@
-use std::{array, iter, ops, string::String as StdString};
+use alloc::string::String as AllocString;
+use core::{array, iter, ops};
 
 use crate::{
     Callback, Closure, Context, Function, String, Table, Thread, TypeError, UserData, Value,
@@ -90,7 +91,7 @@ impl<'gc> IntoValue<'gc> for &'static str {
     }
 }
 
-impl<'gc> IntoValue<'gc> for StdString {
+impl<'gc> IntoValue<'gc> for AllocString {
     fn into_value(self, ctx: Context<'gc>) -> Value<'gc> {
         Value::String(ctx.intern(self.as_bytes()))
     }
@@ -331,7 +332,7 @@ impl<'gc> FromValue<'gc> for String<'gc> {
     }
 }
 
-impl<'gc> FromValue<'gc> for StdString {
+impl<'gc> FromValue<'gc> for AllocString {
     fn from_value(ctx: Context<'gc>, value: Value<'gc>) -> Result<Self, TypeError> {
         let str = String::from_value(ctx, value)?;
         let str = str.to_str().map_err(|_| TypeError {

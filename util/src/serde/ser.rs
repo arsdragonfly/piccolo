@@ -1,4 +1,4 @@
-use std::fmt;
+use core::fmt;
 
 use piccolo::{Context, Table, Value};
 use serde::ser;

@@ -1,7 +1,6 @@
-use std::{
-    collections::{hash_map, VecDeque},
-    fmt, iter, mem,
-};
+use alloc::collections::VecDeque;
+use core::{fmt, iter, mem};
+use std::collections::hash_map;
 
 use ahash::HashMap;
 use gc_arena::Collect;

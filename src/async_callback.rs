@@ -1,13 +1,14 @@
-use std::{
+use core::{
     cell::Cell,
     future::{poll_fn, Future},
     marker::PhantomData,
-    mem, ptr,
-    rc::Rc,
+    mem,
+    pin::Pin,
+    ptr,
     task::{self, Poll, RawWaker, RawWakerVTable, Waker},
 };
 
-use core::pin::Pin;
+use alloc::rc::Rc;
 
 use gc_arena::{Collect, DynamicRootSet, Mutation};
 
