@@ -1,4 +1,4 @@
-use std::io::Write;
+use core::fmt::Write;
 
 use gc_arena::Collect;
 use thiserror::Error;
@@ -6,7 +6,8 @@ use thiserror::Error;
 use crate::async_callback::{AsyncSequence, Locals};
 use crate::{async_sequence, SequenceReturn, Stack};
 use crate::{
-    table::InvalidTableKey, Callback, CallbackReturn, Context, Function, IntoValue, Table, Value,
+    string::ByteWriter, table::InvalidTableKey, Callback, CallbackReturn, Context, Function,
+    IntoValue, Table, Value,
 };
 
 /// An enum of every possible Lua metamethod.
@@ -763,8 +764,8 @@ pub fn concat<'gc>(
             let mut bytes = Vec::new();
             for value in [a, b] {
                 match value {
-                    Value::Integer(i) => write!(&mut bytes, "{}", i).unwrap(),
-                    Value::Number(n) => write!(&mut bytes, "{}", n).unwrap(),
+                    Value::Integer(i) => write!(ByteWriter(&mut bytes), "{}", i).unwrap(),
+                    Value::Number(n) => write!(ByteWriter(&mut bytes), "{}", n).unwrap(),
                     Value::String(s) => bytes.extend(s.as_bytes()),
                     _ => return None,
                 }
@@ -813,8 +814,8 @@ pub fn concat_many<'gc>(
         let mut bytes = Vec::with_capacity(len);
         for value in values {
             match value {
-                Value::Integer(i) => write!(&mut bytes, "{}", i).unwrap(),
-                Value::Number(n) => write!(&mut bytes, "{}", n).unwrap(),
+                Value::Integer(i) => write!(ByteWriter(&mut bytes), "{}", i).unwrap(),
+                Value::Number(n) => write!(ByteWriter(&mut bytes), "{}", n).unwrap(),
                 Value::String(s) => bytes.extend(s.as_bytes()),
                 _ => unreachable!(),
             }
@@ -877,8 +878,8 @@ pub fn concat_separated<'gc>(
         let mut iter = values.iter();
         if let Some(val) = iter.next() {
             match val {
-                Value::Integer(i) => write!(&mut bytes, "{}", i).unwrap(),
-                Value::Number(n) => write!(&mut bytes, "{}", n).unwrap(),
+                Value::Integer(i) => write!(ByteWriter(&mut bytes), "{}", i).unwrap(),
+                Value::Number(n) => write!(ByteWriter(&mut bytes), "{}", n).unwrap(),
                 Value::String(s) => bytes.extend(s.as_bytes()),
                 _ => unreachable!(),
             }
@@ -886,8 +887,8 @@ pub fn concat_separated<'gc>(
             while let Some(val) = iter.next() {
                 bytes.extend(&*sep_str);
                 match val {
-                    Value::Integer(i) => write!(&mut bytes, "{}", i).unwrap(),
-                    Value::Number(n) => write!(&mut bytes, "{}", n).unwrap(),
+                    Value::Integer(i) => write!(ByteWriter(&mut bytes), "{}", i).unwrap(),
+                    Value::Number(n) => write!(ByteWriter(&mut bytes), "{}", n).unwrap(),
                     Value::String(s) => bytes.extend(s.as_bytes()),
                     _ => unreachable!(),
                 }

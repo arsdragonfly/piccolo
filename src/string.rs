@@ -14,6 +14,16 @@ use hashbrown::{hash_map, raw::RawTable, HashMap};
 
 use crate::compiler::string_utils::{debug_utf8_lossy, display_utf8_lossy};
 
+// A helper type to write bytes into a `Vec<u8>` using the `core::fmt::Write` trait.
+pub struct ByteWriter<'a>(pub &'a mut Vec<u8>);
+
+impl fmt::Write for ByteWriter<'_> {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        self.0.extend_from_slice(s.as_bytes());
+        Ok(())
+    }
+}
+
 /// The Lua string type.
 ///
 /// Unlike Rust strings, Lua strings may contain *arbitrary bytes*, and as such are not necessarily
