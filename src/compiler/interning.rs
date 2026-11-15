@@ -1,6 +1,6 @@
 use alloc::rc::Rc;
 
-use ahash::HashSet;
+use hashbrown::HashSet;
 
 pub trait StringInterner {
     type String: AsRef<[u8]> + Clone;

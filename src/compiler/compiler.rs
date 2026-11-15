@@ -1,9 +1,8 @@
 use alloc::collections::VecDeque;
 use core::{fmt, iter, mem};
-use std::collections::hash_map;
 
-use ahash::HashMap;
 use gc_arena::Collect;
+use hashbrown::{hash_map, HashMap};
 use thiserror::Error;
 
 use crate::{
