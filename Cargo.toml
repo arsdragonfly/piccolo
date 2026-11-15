@@ -23,7 +23,7 @@ gc-arena = { git = "https://github.com/kyren/gc-arena", rev = "5a7534b883b703f23
 hashbrown = { version = "0.14", features = ["raw"] }
 rand = { version = "0.8", features = ["small_rng"] }
 serde = "1.0"
-thiserror = "1.0"
+thiserror = { version = "2.0", default-features = false }
 
 piccolo = { path = "./", version = "0.3.3" }
 
