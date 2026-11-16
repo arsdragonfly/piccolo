@@ -6,10 +6,12 @@ use gc_arena::{
     Arena, Collect, Mutation, Rootable,
 };
 
+#[cfg(feature = "std")]
+use crate::stdlib::load_io;
 use crate::{
     finalizers::Finalizers,
     stash::{Fetchable, Stashable},
-    stdlib::{load_base, load_coroutine, load_io, load_math, load_string, load_table},
+    stdlib::{load_base, load_coroutine, load_math, load_string, load_table},
     string::InternedStringSet,
     thread::BadThreadMode,
     Error, ExternError, FromMultiValue, FromValue, Fuel, IntoValue, Registry, RuntimeError,
@@ -155,6 +157,7 @@ impl Lua {
     }
 
     /// Create a new `Lua` instance with all of the stdlib loaded.
+    #[cfg(feature = "std")]
     pub fn full() -> Self {
         let mut lua = Lua::core();
         lua.load_io();
@@ -180,6 +183,7 @@ impl Lua {
     }
 
     /// Load the parts of the stdlib that allow I/O.
+    #[cfg(feature = "std")]
     pub fn load_io(&mut self) {
         self.enter(|ctx| {
             load_io(ctx);
