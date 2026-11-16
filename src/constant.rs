@@ -163,10 +163,7 @@ impl<S: AsRef<[u8]>> Constant<S> {
 
     /// This operation always returns a Number, even when called with Integer arguments.
     pub fn exponentiate(&self, rhs: &Self) -> Option<Self> {
-        Some(Self::Number(libm::pow(
-            self.to_number()?,
-            rhs.to_number()?,
-        )))
+        Some(Self::Number(libm::pow(self.to_number()?, rhs.to_number()?)))
     }
 
     pub fn negate(&self) -> Option<Self> {
