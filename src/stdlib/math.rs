@@ -198,13 +198,15 @@ pub fn load_float<'gc>(ctx: Context<'gc>, math: Table<'gc>) {
     math.set_field(
         ctx,
         "ceil",
-        callback("ceil", &ctx, |_, v: f64| Some(to_int(v.ceil().into()))),
+        callback("ceil", &ctx, |_, v: f64| Some(to_int(libm::ceil(v).into()))),
     );
 
     math.set_field(
         ctx,
         "floor",
-        callback("floor", &ctx, |_, v: f64| Some(to_int(v.floor().into()))),
+        callback("floor", &ctx, |_, v: f64| {
+            Some(to_int(libm::floor(v).into()))
+        }),
     );
 
     math.set_field(
@@ -222,22 +224,24 @@ pub fn load_float<'gc>(ctx: Context<'gc>, math: Table<'gc>) {
     math.set_field(
         ctx,
         "exp",
-        callback("exp", &ctx, |_, v: f64| Some(f64::exp(v))),
+        callback("exp", &ctx, |_, v: f64| Some(libm::exp(v))),
     );
 
     math.set_field(
         ctx,
         "log",
         callback("log", &ctx, |_, (v, base): (f64, Option<f64>)| match base {
-            None => Some(v.ln()),
-            Some(base) => Some(v.log(base)),
+            None => Some(libm::log(v)),
+            Some(2.0) => Some(libm::log2(v)),
+            Some(10.0) => Some(libm::log10(v)),
+            Some(base) => Some(libm::log(v) / libm::log(base)),
         }),
     );
 
     math.set_field(
         ctx,
         "sqrt",
-        callback("sqrt", &ctx, |_, v: f64| Some(v.sqrt())),
+        callback("sqrt", &ctx, |_, v: f64| Some(libm::sqrt(v))),
     );
 
     math.set_field(
@@ -260,13 +264,13 @@ pub fn load_trig<'gc>(ctx: Context<'gc>, math: Table<'gc>) {
     math.set_field(
         ctx,
         "acos",
-        callback("acos", &ctx, |_, v: f64| Some(v.acos())),
+        callback("acos", &ctx, |_, v: f64| Some(libm::acos(v))),
     );
 
     math.set_field(
         ctx,
         "asin",
-        callback("asin", &ctx, |_, v: f64| Some(v.asin())),
+        callback("asin", &ctx, |_, v: f64| Some(libm::asin(v))),
     );
 
     math.set_field(
@@ -274,18 +278,30 @@ pub fn load_trig<'gc>(ctx: Context<'gc>, math: Table<'gc>) {
         "atan",
         callback("atan", &ctx, |_, (a, b): (f64, Option<f64>)| {
             Some(if let Some(b) = b {
-                a.atan2(b)
+                libm::atan2(a, b)
             } else {
-                a.atan()
+                libm::atan(a)
             })
         }),
     );
 
-    math.set_field(ctx, "cos", callback("cos", &ctx, |_, v: f64| Some(v.cos())));
+    math.set_field(
+        ctx,
+        "cos",
+        callback("cos", &ctx, |_, v: f64| Some(libm::cos(v))),
+    );
 
-    math.set_field(ctx, "sin", callback("sin", &ctx, |_, v: f64| Some(v.sin())));
+    math.set_field(
+        ctx,
+        "sin",
+        callback("sin", &ctx, |_, v: f64| Some(libm::sin(v))),
+    );
 
-    math.set_field(ctx, "tan", callback("tan", &ctx, |_, v: f64| Some(v.tan())));
+    math.set_field(
+        ctx,
+        "tan",
+        callback("tan", &ctx, |_, v: f64| Some(libm::tan(v))),
+    );
 }
 
 pub fn load_random<'gc>(ctx: Context<'gc>, math: Table<'gc>) {

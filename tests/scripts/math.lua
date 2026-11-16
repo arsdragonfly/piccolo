@@ -122,6 +122,8 @@ do
     assert(math.log(0, 10) == -math.huge and
            math.log(1, 10) == 0.0 and
            math.log(10, 10) == 1.0 and
+           math.log(1000, 10) == 3.0 and
+           math.log(8, 2) == 3.0 and
            math.log(math.exp(1), math.exp(1)) == 1.0 and
            math.abs(math.log(3.1622776601684, 10) - 0.5) < 1e-7 and
            is_nan(math.log(-1, 10)))

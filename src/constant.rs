@@ -139,7 +139,7 @@ impl<S: AsRef<[u8]>> Constant<S> {
                     Some(Self::Integer(d))
                 }
             }
-            (a, b) => Some(Self::Number((a.to_number()? / b.to_number()?).floor())),
+            (a, b) => Some(Self::Number(libm::floor(a.to_number()? / b.to_number()?))),
         }
     }
 
@@ -163,7 +163,10 @@ impl<S: AsRef<[u8]>> Constant<S> {
 
     /// This operation always returns a Number, even when called with Integer arguments.
     pub fn exponentiate(&self, rhs: &Self) -> Option<Self> {
-        Some(Self::Number(self.to_number()?.powf(rhs.to_number()?)))
+        Some(Self::Number(libm::pow(
+            self.to_number()?,
+            rhs.to_number()?,
+        )))
     }
 
     pub fn negate(&self) -> Option<Self> {
